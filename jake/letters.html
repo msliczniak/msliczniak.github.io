@@ -69,13 +69,7 @@ function _started() {
 	document.onkeypress = _keypress;
 	document.onclick = _click;
 
-	t = "";
-	for (j = 0; j < h; j++) {
-		for (i = 0; i < w; i++)
-			t += "."
-		t += "\n"
-	}
-	s.innerHTML = t;
+	init();
 }
 
 function end() {
