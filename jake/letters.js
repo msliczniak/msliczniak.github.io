@@ -21,9 +21,7 @@
 	width = 0
 	height = 0
 
-	//cols = w
-	//lines = h
-
+    var rounds = 1
 
 // cl clear screen
 // hi stand-out
@@ -44,10 +42,16 @@ function draw(  i, j, gameover) {
 					if (screen[[i,j]] == "*") {
 						t+= carr[2]
 						gameover = 1
+					} else {
+						t+= carr[1]
 					}
 					
+					
                     if (player1h == player2h) {
-                        t+="X"
+                        if (! gameover) {
+                            t+= carr[4]
+                        }
+                        t+= "X"
                     } else {
                         t+="&lt;"
                     }
@@ -61,6 +65,8 @@ function draw(  i, j, gameover) {
 					if (screen[[i,j]] == "*") {
 						t+= carr[2]
 						gameover = 1
+					} else {
+						t+= carr[3]
 					}
 
 					//printf("%s", carr[1] ">" carr[1])
@@ -122,6 +128,8 @@ function init(  i, j) {
 function upplayerone()
 {
 	if (player1h <= 1) return
+	
+    screenleft()
 
 	player1h = player1h - 1
 	draw()
@@ -131,7 +139,9 @@ function upplayerone()
 function downplayerone()
 {
 	if (player1h >= height) return
-	
+		
+    screenleft()
+
 	player1h = player1h + 1
 	draw()
 }
@@ -140,6 +150,8 @@ function downplayerone()
 function upplayertwo()
 {
 	if (player2h <= 1) return
+	
+    screenleft()
 
 	player2h = player2h - 1
 	draw()
@@ -150,12 +162,31 @@ function downplayertwo()
 {
 	if (player2h >= height) return
 	
-	player2h = player2h + 1
+    screenleft()
+	
+    player2h = player2h + 1
 	draw()
 }
 
 function screenleft(  i, j) {
 	score = score + 1
+    if (score == 100) {
+        rounds = 2
+    } else if (score == 200) {
+        rounds = 3
+    } else if (score == 300) {
+        rounds = 4
+    } else if (score == 500) {
+        rounds = 5
+    } else if (score == 700) {
+        rounds = 6
+    } else if (score == 1000) {
+        rounds = 7
+    } else if (score == 1300) {
+        rounds = 8
+    } else if (score == 1800) {
+        rounds = 9
+    }
 
 	// move all left
 	for (j = 1; j <= height; j = j + 1) {
@@ -168,34 +199,36 @@ function screenleft(  i, j) {
 	for (j = 1; j <= height; j = j + 1) {
 		screen[[width,j]] = " "
 	}
-	
-	// put enemy randomly in right column
-	j = Math.floor(Math.random() * height) + 1
-	screen[[width,j]] = "*"
-	
-	// put another enemy randomly in right column
-	i = Math.floor(Math.random() * (height - 1)) + 1
-	i = j + i
-	if (i > height) i = i - height
-	screen[[width,i]] = "*"
+    
+	for (round = 0; round < rounds; round = round + 1){
+        // put enemy randomly in right column
+        j = Math.floor(Math.random() * height) + 1
+        screen[[width,j]] = "*"
+        
+        // put another enemy randomly in right column
+        i = Math.floor(Math.random() * (height - 1)) + 1
+        i = j + i
+        if (i > height) i = i - height
+        screen[[width,i]] = "*"
+    }
 }
 
 
 function handle(c) {
 	if (c.toUpperCase()==nkey) {
-		screenleft()
+		
 
         upplayerone()
     } else if (c.toUpperCase()==skey) {
-		screenleft()
+		
 
         downplayerone()
 	} else if (c.toUpperCase()==nkey2) {
-		screenleft()
+		
 
         upplayertwo()
     } else if (c.toUpperCase()==skey2) {
-		screenleft()
+	
 
         downplayertwo()
     }
